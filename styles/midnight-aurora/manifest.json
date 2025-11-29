@@ -1,0 +1,239 @@
+{
+  "$schema": "https://tokenatelier.dev/schema/manifest.json",
+  "name": "midnight-aurora",
+  "version": "1.0.0",
+  "title": "Midnight Aurora",
+  "description": "A dark, elegant theme with aurora-inspired accent colors. Features deep navy backgrounds with vibrant teal, purple, and pink accents. Perfect for dashboards, developer tools, and modern SaaS applications.",
+  "author": "Token Atelier",
+  "license": "MIT",
+
+  "access": "premium",
+  "price": {
+    "single": 39,
+    "currency": "USD"
+  },
+  "preview_url": "https://tokenatelier.dev/preview/midnight-aurora",
+
+  "ai_instructions": {
+    "summary": "Midnight Aurora is a dark theme with deep navy backgrounds and aurora-colored accents (teal, purple, pink). Best for developer tools, dashboards, and modern SaaS apps.",
+    "installation_order": [
+      "1. Copy lib/utils.ts to src/lib/utils.ts",
+      "2. Copy globals.css to src/styles/globals.css (or merge with existing)",
+      "3. Merge tailwind.config.patch.js into existing tailwind.config.js/ts",
+      "4. Copy all components from components/ to src/components/ui/",
+      "5. Install npm dependencies",
+      "6. Import globals.css in your app entry point",
+      "7. (Optional) Create a route for Showcase component to preview all components"
+    ],
+    "showcase_usage": "The Showcase component renders all UI components for preview. User should create a route (e.g., app/showcase/page.tsx) that imports and renders <Showcase /> from @/components/ui/showcase. This provides live preview with automatic CSS sync when editing styles.",
+    "auth_required": true,
+    "auth_note": "This is a premium style. User needs a Token Atelier API key. Check for .tokenatelier.json config in project root or home directory, or ask user for their API key."
+  },
+
+  "compatibility": {
+    "tailwind": ["3.x", "4.x"],
+    "react": ">=18.0.0",
+    "frameworks": ["nextjs", "vite", "remix", "cra"]
+  },
+
+  "files": {
+    "utils": {
+      "source": "./lib/utils.ts",
+      "target": "src/lib/utils.ts",
+      "description": "Utility functions including cn() for class merging"
+    },
+    "globals": {
+      "source": "./globals.css",
+      "target": "src/styles/globals.css",
+      "merge": true,
+      "description": "CSS custom properties and base styles"
+    },
+    "tailwindConfig": {
+      "source": "./tailwind.config.patch.js",
+      "target": "tailwind.config.js",
+      "merge": true,
+      "description": "Tailwind theme extensions - merge into theme.extend"
+    },
+    "components": {
+      "source": "./components/",
+      "target": "src/components/ui/",
+      "description": "All styled React components"
+    }
+  },
+
+  "dependencies": {
+    "npm": [
+      "@radix-ui/react-slot",
+      "@radix-ui/react-dialog",
+      "@radix-ui/react-dropdown-menu",
+      "@radix-ui/react-select",
+      "@radix-ui/react-checkbox",
+      "@radix-ui/react-radio-group",
+      "@radix-ui/react-switch",
+      "@radix-ui/react-tabs",
+      "@radix-ui/react-accordion",
+      "@radix-ui/react-avatar",
+      "@radix-ui/react-tooltip",
+      "@radix-ui/react-progress",
+      "@radix-ui/react-label",
+      "@radix-ui/react-separator",
+      "class-variance-authority",
+      "clsx",
+      "tailwind-merge"
+    ]
+  },
+
+  "tokens": {
+    "colors": {
+      "background": { "dark": "hsl(222 47% 11%)", "light": "hsl(0 0% 100%)" },
+      "foreground": { "dark": "hsl(210 40% 98%)", "light": "hsl(222 47% 11%)" },
+      "primary": { "value": "hsl(199 89% 48%)", "name": "Aurora Teal" },
+      "secondary": { "value": "hsl(280 65% 60%)", "name": "Aurora Purple" },
+      "accent": { "value": "hsl(330 80% 60%)", "name": "Aurora Pink" },
+      "muted": { "dark": "hsl(217 33% 17%)", "light": "hsl(220 14% 96%)" },
+      "destructive": { "value": "hsl(0 62% 50%)", "name": "Error Red" }
+    },
+    "typography": {
+      "fontFamily": {
+        "sans": "Inter, ui-sans-serif, system-ui, sans-serif",
+        "mono": "JetBrains Mono, ui-monospace, monospace"
+      }
+    },
+    "radius": {
+      "sm": "0.25rem",
+      "md": "0.375rem",
+      "lg": "0.5rem"
+    }
+  },
+
+  "components": [
+    {
+      "name": "button",
+      "file": "button.tsx",
+      "description": "Versatile button with 6 variants (default, secondary, destructive, outline, ghost, link) and 4 sizes",
+      "category": "primitive"
+    },
+    {
+      "name": "badge",
+      "file": "badge.tsx",
+      "description": "Status indicator badges with multiple variants",
+      "category": "primitive"
+    },
+    {
+      "name": "separator",
+      "file": "separator.tsx",
+      "description": "Visual divider for content sections",
+      "category": "primitive"
+    },
+    {
+      "name": "skeleton",
+      "file": "skeleton.tsx",
+      "description": "Loading placeholder with pulse animation",
+      "category": "primitive"
+    },
+    {
+      "name": "input",
+      "file": "input.tsx",
+      "description": "Text input field with consistent styling",
+      "category": "form"
+    },
+    {
+      "name": "label",
+      "file": "label.tsx",
+      "description": "Accessible form label component",
+      "category": "form"
+    },
+    {
+      "name": "checkbox",
+      "file": "checkbox.tsx",
+      "description": "Checkbox input with Radix accessibility",
+      "category": "form"
+    },
+    {
+      "name": "radio-group",
+      "file": "radio-group.tsx",
+      "description": "Radio button group for single selection",
+      "category": "form"
+    },
+    {
+      "name": "switch",
+      "file": "switch.tsx",
+      "description": "Toggle switch for boolean values",
+      "category": "form"
+    },
+    {
+      "name": "select",
+      "file": "select.tsx",
+      "description": "Dropdown select with search and keyboard navigation",
+      "category": "form"
+    },
+    {
+      "name": "card",
+      "file": "card.tsx",
+      "description": "Container component with header, content, and footer sections",
+      "category": "layout"
+    },
+    {
+      "name": "avatar",
+      "file": "avatar.tsx",
+      "description": "User avatar with image and fallback support",
+      "category": "layout"
+    },
+    {
+      "name": "alert",
+      "file": "alert.tsx",
+      "description": "Alert messages for feedback and notifications",
+      "category": "layout"
+    },
+    {
+      "name": "dialog",
+      "file": "dialog.tsx",
+      "description": "Modal dialog with overlay and animations",
+      "category": "interactive"
+    },
+    {
+      "name": "dropdown-menu",
+      "file": "dropdown-menu.tsx",
+      "description": "Dropdown menu with submenus and keyboard navigation",
+      "category": "interactive"
+    },
+    {
+      "name": "tabs",
+      "file": "tabs.tsx",
+      "description": "Tabbed interface for content organization",
+      "category": "interactive"
+    },
+    {
+      "name": "accordion",
+      "file": "accordion.tsx",
+      "description": "Collapsible content sections",
+      "category": "interactive"
+    },
+    {
+      "name": "tooltip",
+      "file": "tooltip.tsx",
+      "description": "Hover tooltip for additional information",
+      "category": "interactive"
+    },
+    {
+      "name": "toast",
+      "file": "toast.tsx",
+      "description": "Toast notifications with auto-dismiss",
+      "category": "interactive"
+    },
+    {
+      "name": "progress",
+      "file": "progress.tsx",
+      "description": "Progress bar for loading states",
+      "category": "interactive"
+    },
+    {
+      "name": "showcase",
+      "file": "showcase.tsx",
+      "description": "Interactive showcase component that renders all UI components. Add as a route in your project to preview and test components with live CSS sync.",
+      "category": "utility",
+      "optional": true,
+      "usage_note": "Import and render as a page route (e.g., /showcase) to preview all components with your current styles"
+    }
+  ]
+}
