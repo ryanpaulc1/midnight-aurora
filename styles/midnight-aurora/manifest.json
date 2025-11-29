@@ -1,7 +1,7 @@
 {
   "$schema": "https://tokenatelier.dev/schema/manifest.json",
   "name": "midnight-aurora",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "title": "Midnight Aurora",
   "description": "A dark, elegant theme with aurora-inspired accent colors. Features deep navy backgrounds with vibrant teal, purple, and pink accents. Perfect for dashboards, developer tools, and modern SaaS applications.",
   "author": "Token Atelier",
@@ -15,23 +15,255 @@
   "preview_url": "https://tokenatelier.dev/preview/midnight-aurora",
 
   "ai_instructions": {
-    "summary": "Midnight Aurora is a dark theme with deep navy backgrounds and aurora-colored accents (teal, purple, pink). Best for developer tools, dashboards, and modern SaaS apps.",
-    "installation_order": [
-      "1. Copy lib/utils.ts to src/lib/utils.ts",
-      "2. Copy globals.css to src/styles/globals.css (or merge with existing)",
-      "3. Merge tailwind.config.patch.js into existing tailwind.config.js/ts",
-      "4. Copy all components from components/ to src/components/ui/",
-      "5. Install npm dependencies",
-      "6. Import globals.css in your app entry point",
-      "7. (Optional) Create a route for Showcase component to preview all components"
-    ],
+    "critical_warning": "STOP. Do NOT summarize this style guide. Do NOT extract only color tokens. Do NOT manually apply styles to existing components. You MUST complete the FULL installation process below. Partial installation will result in broken components, missing styles, and TypeScript errors.",
+
+    "what_this_is": "Midnight Aurora is a COMPLETE COMPONENT LIBRARY (not just colors). It includes 20+ pre-styled React components built on Radix UI. Installation requires copying ALL components, utilities, CSS, and dependencies.",
+
+    "pre_flight_checklist": {
+      "description": "You MUST verify ALL of the following BEFORE starting installation:",
+      "required_checks": [
+        "Confirm this is a React project with Tailwind CSS configured",
+        "Identify the project's src directory structure (src/ or app/)",
+        "Detect Tailwind version: check package.json for 'tailwindcss' version (3.x or 4.x)",
+        "Locate the existing tailwind.config.js/ts file (v3 only)",
+        "Identify where global CSS is imported (app/layout.tsx, main.tsx, _app.tsx, etc.)",
+        "Check if src/lib/utils.ts already exists (if yes, MERGE the cn() function, do not overwrite)"
+      ],
+      "abort_conditions": [
+        "If Tailwind CSS is not installed, STOP and help user install Tailwind first",
+        "If no React framework detected, STOP and confirm with user"
+      ]
+    },
+
+    "version_detection": {
+      "description": "Detect the target project's Tailwind version to choose correct files",
+      "instructions": [
+        "Check package.json for 'tailwindcss' version",
+        "If version starts with '4.' or '^4' -> use Tailwind v4 installation path",
+        "If version starts with '3.' or '^3' -> use Tailwind v3 installation path",
+        "If unclear, check for '@tailwindcss/postcss' in devDependencies (indicates v4)",
+        "If still unclear, check postcss.config for 'tailwindcss' (v3) vs '@tailwindcss/postcss' (v4)",
+        "When in doubt, ASK the user which Tailwind version they are using"
+      ]
+    },
+
+    "installation_v3": {
+      "description": "Installation steps for Tailwind CSS v3.x projects. Execute ALL steps in EXACT order.",
+      "steps": [
+        {
+          "step": 1,
+          "action": "COPY lib/utils.ts to src/lib/utils.ts",
+          "critical": true,
+          "why": "Contains cn() utility function required by ALL components. Without this, every component will have TypeScript/import errors.",
+          "verification": "File exists at src/lib/utils.ts with cn() function exported"
+        },
+        {
+          "step": 2,
+          "action": "COPY globals.v3.css to src/styles/globals.css (or merge with existing)",
+          "critical": true,
+          "why": "Contains ALL CSS custom properties (--background, --primary, --secondary, etc.). Without these, components render with no colors.",
+          "merge_note": "If global CSS exists, APPEND the :root and .dark CSS variable blocks. Do NOT replace existing styles.",
+          "verification": "CSS file contains :root block with --background, --primary, --secondary, --accent variables"
+        },
+        {
+          "step": 3,
+          "action": "MERGE tailwind.config.patch.js into tailwind.config.js/ts",
+          "critical": true,
+          "why": "Extends Tailwind with color mappings (bg-primary, text-foreground, etc.) and custom animations. Without this, Tailwind classes in components will not work.",
+          "merge_instructions": [
+            "Add darkMode: ['class'] to config root if not present",
+            "Merge theme.extend.colors into existing theme.extend.colors",
+            "Merge theme.extend.borderRadius into existing",
+            "Merge theme.extend.fontFamily into existing",
+            "Merge theme.extend.keyframes and theme.extend.animation for accordion"
+          ],
+          "verification": "tailwind.config contains colors.primary, colors.secondary, colors.accent mappings"
+        },
+        {
+          "step": 4,
+          "action": "COPY ALL component files from components/ to src/components/ui/",
+          "critical": true,
+          "why": "These are the styled React components. ALL files must be copied - they depend on each other and on the index.ts exports.",
+          "file_count": 22,
+          "verification": "All 22 files exist in src/components/ui/ including index.ts"
+        },
+        {
+          "step": 5,
+          "action": "INSTALL npm dependencies",
+          "critical": true,
+          "command": "npm install @radix-ui/react-slot @radix-ui/react-dialog @radix-ui/react-dropdown-menu @radix-ui/react-select @radix-ui/react-checkbox @radix-ui/react-radio-group @radix-ui/react-switch @radix-ui/react-tabs @radix-ui/react-accordion @radix-ui/react-avatar @radix-ui/react-tooltip @radix-ui/react-progress @radix-ui/react-label @radix-ui/react-separator class-variance-authority clsx tailwind-merge lucide-react",
+          "why": "Components use Radix UI primitives for accessibility and CVA for variants. Without these packages, imports will fail.",
+          "package_count": 18,
+          "verification": "All 18 packages appear in package.json dependencies"
+        },
+        {
+          "step": 6,
+          "action": "VERIFY globals.css is imported in app entry point",
+          "critical": true,
+          "targets": ["app/layout.tsx", "pages/_app.tsx", "src/main.tsx", "src/index.tsx"],
+          "why": "CSS variables must be loaded for any styles to apply.",
+          "add_import": "import '@/styles/globals.css' (or appropriate path)",
+          "verification": "Entry point file contains import statement for globals.css"
+        }
+      ]
+    },
+
+    "installation_v4": {
+      "description": "Installation steps for Tailwind CSS v4.x projects. Execute ALL steps in EXACT order.",
+      "steps": [
+        {
+          "step": 1,
+          "action": "COPY lib/utils.ts to src/lib/utils.ts",
+          "critical": true,
+          "why": "Contains cn() utility function required by ALL components. Without this, every component will have TypeScript/import errors.",
+          "verification": "File exists at src/lib/utils.ts with cn() function exported"
+        },
+        {
+          "step": 2,
+          "action": "COPY globals.v4.css to src/styles/globals.css (or merge with existing)",
+          "critical": true,
+          "why": "Contains CSS custom properties AND @theme inline block for Tailwind v4. Without these, components have no colors.",
+          "merge_note": "If global CSS exists, APPEND the :root, .dark, and @theme inline blocks. Do NOT replace existing styles.",
+          "verification": "CSS file contains :root block, .dark block, AND @theme inline block"
+        },
+        {
+          "step": 3,
+          "action": "VERIFY PostCSS config uses @tailwindcss/postcss",
+          "critical": true,
+          "why": "Tailwind v4 requires @tailwindcss/postcss package, NOT tailwindcss as PostCSS plugin.",
+          "expected_config": "export default { plugins: ['@tailwindcss/postcss'] }",
+          "verification": "postcss.config.js/mjs uses '@tailwindcss/postcss' plugin"
+        },
+        {
+          "step": 4,
+          "action": "COPY ALL component files from components/ to src/components/ui/",
+          "critical": true,
+          "why": "These are the styled React components. ALL files must be copied - they depend on each other.",
+          "file_count": 22,
+          "verification": "All 22 files exist in src/components/ui/ including index.ts"
+        },
+        {
+          "step": 5,
+          "action": "INSTALL npm dependencies",
+          "critical": true,
+          "command": "npm install @radix-ui/react-slot @radix-ui/react-dialog @radix-ui/react-dropdown-menu @radix-ui/react-select @radix-ui/react-checkbox @radix-ui/react-radio-group @radix-ui/react-switch @radix-ui/react-tabs @radix-ui/react-accordion @radix-ui/react-avatar @radix-ui/react-tooltip @radix-ui/react-progress @radix-ui/react-label @radix-ui/react-separator class-variance-authority clsx tailwind-merge lucide-react @tailwindcss/postcss",
+          "why": "Components use Radix UI primitives. @tailwindcss/postcss is required for Tailwind v4.",
+          "package_count": 19,
+          "verification": "All 19 packages appear in package.json dependencies"
+        },
+        {
+          "step": 6,
+          "action": "VERIFY globals.css is imported in app entry point",
+          "critical": true,
+          "targets": ["app/layout.tsx", "pages/_app.tsx", "src/main.tsx", "src/index.tsx"],
+          "why": "CSS variables and @theme block must be loaded for styles to apply.",
+          "add_import": "import '@/styles/globals.css' (or appropriate path)",
+          "verification": "Entry point file contains import statement for globals.css"
+        }
+      ],
+      "note": "Tailwind v4 does NOT require a tailwind.config.js file. All theme configuration is in the CSS file via @theme inline."
+    },
+
+    "common_mistakes": {
+      "description": "AI assistants frequently make these errors. You MUST avoid ALL of them:",
+      "mistakes": [
+        {
+          "mistake": "Only extracting color tokens from the 'tokens' section and applying them manually",
+          "why_wrong": "The tokens section is METADATA for documentation only. The actual implementation is in globals.v3.css/globals.v4.css and tailwind.config.patch.js. Extracting tokens without copying files results in ZERO styling.",
+          "correct_action": "Copy the actual CSS files (globals.v3.css or globals.v4.css) which contain the CSS variable definitions"
+        },
+        {
+          "mistake": "Summarizing the style guide instead of installing it",
+          "why_wrong": "User requested installation, not a description. Summarizing without action does not modify their project.",
+          "correct_action": "Execute ALL installation steps and copy actual files to the project"
+        },
+        {
+          "mistake": "Copying only some components instead of all 22 files",
+          "why_wrong": "Components have internal dependencies. The showcase.tsx imports all others. index.ts exports all. Partial installation breaks imports.",
+          "correct_action": "Copy ALL 22 files from the components/ directory"
+        },
+        {
+          "mistake": "Replacing tailwind.config.js instead of merging (v3 only)",
+          "why_wrong": "User may have custom Tailwind configuration. Replacing it destroys their existing setup.",
+          "correct_action": "MERGE the theme.extend sections into the existing config, preserving user customizations"
+        },
+        {
+          "mistake": "Skipping npm install because 'the components are just files'",
+          "why_wrong": "Components import from @radix-ui/* packages and use CVA. Without installation, the project will not compile.",
+          "correct_action": "Run the full npm install command with all required packages"
+        },
+        {
+          "mistake": "Not importing globals.css in the app entry point",
+          "why_wrong": "CSS custom properties are defined in globals.css. Without importing it, all color variables are undefined and components have no styling.",
+          "correct_action": "Add import statement to the app entry point (layout.tsx, main.tsx, _app.tsx, etc.)"
+        }
+      ]
+    },
+
+    "post_installation_verification": {
+      "description": "After completing ALL steps, verify the installation succeeded:",
+      "checks": [
+        {
+          "check": "Component file count",
+          "location": "src/components/ui/",
+          "expected": "22 files (21 components + index.ts)"
+        },
+        {
+          "check": "Utils file exists",
+          "location": "src/lib/utils.ts",
+          "expected": "File exists with cn() function exported"
+        },
+        {
+          "check": "CSS variables defined",
+          "location": "src/styles/globals.css (or global CSS)",
+          "expected": "Contains :root { --background: ...; --primary: ...; --secondary: ...; --accent: ...; }"
+        },
+        {
+          "check": "Tailwind config extended (v3 only)",
+          "location": "tailwind.config.js/ts",
+          "expected": "Contains colors.primary, colors.secondary, colors.accent in theme.extend"
+        },
+        {
+          "check": "Dependencies installed",
+          "location": "package.json",
+          "expected": "Contains @radix-ui/*, class-variance-authority, clsx, tailwind-merge, lucide-react"
+        },
+        {
+          "check": "CSS imported",
+          "location": "App entry point (layout.tsx, main.tsx, etc.)",
+          "expected": "Contains import for globals.css"
+        }
+      ],
+      "success_message": "Installation complete! Suggest user add a route for <Showcase /> component to preview all styled components.",
+      "failure_action": "If ANY check fails, identify which step was missed and complete it before declaring success."
+    },
+
     "showcase_usage": "The Showcase component renders all UI components for preview. User should create a route (e.g., app/showcase/page.tsx) that imports and renders <Showcase /> from @/components/ui/showcase. This provides live preview with automatic CSS sync when editing styles.",
+
     "auth_required": true,
     "auth_note": "This is a premium style. User needs a Token Atelier API key. Check for .tokenatelier.json config in project root or home directory, or ask user for their API key."
   },
 
   "compatibility": {
-    "tailwind": ["3.x", "4.x"],
+    "tailwind": {
+      "v3": {
+        "versions": ["3.x"],
+        "files": {
+          "globals": "globals.v3.css",
+          "config": "tailwind.config.patch.js"
+        },
+        "notes": "Requires tailwindcss as PostCSS plugin. Uses JavaScript config file."
+      },
+      "v4": {
+        "versions": ["4.x"],
+        "files": {
+          "globals": "globals.v4.css",
+          "config": null
+        },
+        "notes": "Requires @tailwindcss/postcss package. No JS config needed - uses @theme inline in CSS.",
+        "additional_dependencies": ["@tailwindcss/postcss"]
+      }
+    },
     "react": ">=18.0.0",
     "frameworks": ["nextjs", "vite", "remix", "cra"]
   },
@@ -42,22 +274,31 @@
       "target": "src/lib/utils.ts",
       "description": "Utility functions including cn() for class merging"
     },
-    "globals": {
-      "source": "./globals.css",
+    "globals_v3": {
+      "source": "./globals.v3.css",
       "target": "src/styles/globals.css",
       "merge": true,
-      "description": "CSS custom properties and base styles"
+      "tailwind_version": "3.x",
+      "description": "CSS for Tailwind v3 - uses @tailwind directives and requires JS config"
+    },
+    "globals_v4": {
+      "source": "./globals.v4.css",
+      "target": "src/styles/globals.css",
+      "merge": true,
+      "tailwind_version": "4.x",
+      "description": "CSS for Tailwind v4 - uses @import, @theme inline, native CSS config"
     },
     "tailwindConfig": {
       "source": "./tailwind.config.patch.js",
       "target": "tailwind.config.js",
       "merge": true,
-      "description": "Tailwind theme extensions - merge into theme.extend"
+      "tailwind_version": "3.x",
+      "description": "Tailwind v3 theme extensions - NOT needed for v4"
     },
     "components": {
       "source": "./components/",
       "target": "src/components/ui/",
-      "description": "All styled React components"
+      "description": "All styled React components (compatible with both v3 and v4)"
     }
   },
 
@@ -79,7 +320,11 @@
       "@radix-ui/react-separator",
       "class-variance-authority",
       "clsx",
-      "tailwind-merge"
+      "tailwind-merge",
+      "lucide-react"
+    ],
+    "npm_v4_additional": [
+      "@tailwindcss/postcss"
     ]
   },
 
@@ -95,7 +340,8 @@
     },
     "typography": {
       "fontFamily": {
-        "sans": "Inter, ui-sans-serif, system-ui, sans-serif",
+        "sans": "Work Sans, ui-sans-serif, system-ui, sans-serif",
+        "heading": "Aboreto, ui-serif, Georgia, serif",
         "mono": "JetBrains Mono, ui-monospace, monospace"
       }
     },

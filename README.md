@@ -48,8 +48,9 @@ token-atelier/
 │   └── midnight-aurora/         # Style package
 │       ├── manifest.json        # AI-readable installation spec
 │       ├── STYLE.md            # Human-readable guide
-│       ├── globals.css         # CSS variables + base styles
-│       ├── tailwind.config.patch.js
+│       ├── globals.v3.css      # CSS for Tailwind v3
+│       ├── globals.v4.css      # CSS for Tailwind v4
+│       ├── tailwind.config.patch.js  # Config (v3 only)
 │       ├── components/         # Styled React components
 │       │   ├── button.tsx
 │       │   ├── card.tsx
@@ -81,10 +82,26 @@ Each style includes a `STYLE.md` with:
 - Customization instructions
 - Component documentation
 
+## Compatibility
+
+| Requirement | Supported Versions |
+|-------------|-------------------|
+| **Tailwind CSS** | v3.x and v4.x |
+| **React** | 18.0+ |
+| **Frameworks** | Next.js, Vite, Remix, CRA |
+
+### Tailwind v3 vs v4
+
+Each style includes version-specific CSS files:
+- `globals.v3.css` - Uses `@tailwind` directives + JS config
+- `globals.v4.css` - Uses `@import "tailwindcss"` + `@theme inline`
+
+The manifest.json includes version detection instructions so AI assistants can automatically choose the correct files.
+
 ## Tech Stack
 
 - **[Radix UI Primitives](https://www.radix-ui.com/primitives)** - Accessible, unstyled components
-- **[Tailwind CSS](https://tailwindcss.com)** - Utility-first styling
+- **[Tailwind CSS](https://tailwindcss.com)** - Utility-first styling (v3 and v4)
 - **[Class Variance Authority](https://cva.style/)** - Type-safe variant management
 - **TypeScript** - Full type safety
 

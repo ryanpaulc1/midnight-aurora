@@ -6,18 +6,30 @@ A dark, elegant theme with aurora-inspired accent colors. Features deep navy bac
 
 ### For AI Assistants (Claude Code, Cursor, etc.)
 
-Read `manifest.json` for structured installation instructions.
+Read `manifest.json` for structured installation instructions. The manifest includes:
+- Pre-flight checklist to verify project setup
+- Version detection for Tailwind v3 vs v4
+- Step-by-step installation with verification
+- Common mistakes to avoid
 
-### Manual Installation
+### Detect Your Tailwind Version
+
+Check your `package.json` for the `tailwindcss` version:
+- Version `3.x` → Follow **Tailwind v3** instructions below
+- Version `4.x` → Follow **Tailwind v4** instructions below
+
+---
+
+### Manual Installation (Tailwind v3)
 
 1. **Copy utility function**
    ```bash
    cp lib/utils.ts src/lib/utils.ts
    ```
 
-2. **Copy or merge globals.css**
+2. **Copy globals.v3.css**
    ```bash
-   cp globals.css src/styles/globals.css
+   cp globals.v3.css src/styles/globals.css
    ```
    Or merge the CSS variables into your existing global styles.
 
@@ -44,6 +56,47 @@ Read `manifest.json` for structured installation instructions.
 5. **Install dependencies**
    ```bash
    npm install @radix-ui/react-slot @radix-ui/react-dialog @radix-ui/react-dropdown-menu @radix-ui/react-select @radix-ui/react-checkbox @radix-ui/react-radio-group @radix-ui/react-switch @radix-ui/react-tabs @radix-ui/react-accordion @radix-ui/react-avatar @radix-ui/react-tooltip @radix-ui/react-progress @radix-ui/react-label @radix-ui/react-separator class-variance-authority clsx tailwind-merge lucide-react
+   ```
+
+6. **Import globals.css** in your app entry point (e.g., `app/layout.tsx` or `main.tsx`)
+   ```tsx
+   import '@/styles/globals.css'
+   ```
+
+---
+
+### Manual Installation (Tailwind v4)
+
+1. **Copy utility function**
+   ```bash
+   cp lib/utils.ts src/lib/utils.ts
+   ```
+
+2. **Copy globals.v4.css**
+   ```bash
+   cp globals.v4.css src/styles/globals.css
+   ```
+   Or merge the CSS variables and `@theme inline` block into your existing global styles.
+
+3. **Verify PostCSS config**
+
+   Ensure your `postcss.config.js` uses the v4 plugin:
+   ```js
+   export default {
+     plugins: ['@tailwindcss/postcss']
+   }
+   ```
+
+   > **Note:** Tailwind v4 does NOT require a `tailwind.config.js` file. All theme configuration is in the CSS file via `@theme inline`.
+
+4. **Copy components**
+   ```bash
+   cp -r components/* src/components/ui/
+   ```
+
+5. **Install dependencies**
+   ```bash
+   npm install @radix-ui/react-slot @radix-ui/react-dialog @radix-ui/react-dropdown-menu @radix-ui/react-select @radix-ui/react-checkbox @radix-ui/react-radio-group @radix-ui/react-switch @radix-ui/react-tabs @radix-ui/react-accordion @radix-ui/react-avatar @radix-ui/react-tooltip @radix-ui/react-progress @radix-ui/react-label @radix-ui/react-separator class-variance-authority clsx tailwind-merge lucide-react @tailwindcss/postcss
    ```
 
 6. **Import globals.css** in your app entry point (e.g., `app/layout.tsx` or `main.tsx`)
